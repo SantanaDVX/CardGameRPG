@@ -26,7 +26,7 @@ public class TurnMaster : MonoBehaviour {
     public static string STARTPHASEPREFIX = "start-phase-";
     public static string ENDPHASEPREFIX = "end-phase-";
 
-    private bool gameStarted = false;
+    public bool gameStarted = false;
 
     public static string getGenericStartPhaseTrigger() {
         return STARTPHASEPREFIX + "-generic";
@@ -69,7 +69,6 @@ public class TurnMaster : MonoBehaviour {
                 && currentPhase == Phase.Action
                 && subphaseAction == SubphaseAction.WaitingForDefenseResponse
                 && targetAbilityWaitingForPlayerResponse != null) {
-            targetAbilityWaitingForPlayerResponse.playerSkippedResponse = true;
             setContinueButton(false);
             targetAbilityWaitingForPlayerResponse = null;
         }
@@ -130,19 +129,6 @@ public class TurnMaster : MonoBehaviour {
         return continueButton.activeSelf;
     }
     
-    private void Update() {
-        if (gameStarted) {
-            if (!(PlayArea.Instance().abilityOnStack()
-               || waitingOnPlayerPhaseButton()
-               || BasicAI.anyAIThinking())) {
-                timeWaitingInPhase += Time.deltaTime;
-            }
-
-            if (timeWaitingInPhase >= phaseTurnoverTime) {
-                incrementPhase();
-            }
-        }
-    }
 
     public void checkTargetListener(Targetable target) {
         if (targetListener != null) {

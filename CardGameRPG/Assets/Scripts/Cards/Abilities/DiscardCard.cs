@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DiscardCard : TargetAbility {
 
-    public override void utilizeTarget(Targetable target) {
+    public override void activateAbility(CardDetails src) {
         BaseCard card = target as BaseCard;
         card.character.hand.discardCard(card);
     }

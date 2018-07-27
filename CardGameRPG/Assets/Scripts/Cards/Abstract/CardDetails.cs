@@ -18,8 +18,7 @@ public class CardDetails : MonoBehaviour {
     public GameObject prefabRef;
 
     private bool waitingForPlayArea = false;
-
-    protected int abilityResolutionIndex = -1;
+    
     private bool resolutionDone = false;
     private float abilityPlayedTime = 0.0f;
 
@@ -75,25 +74,25 @@ public class CardDetails : MonoBehaviour {
         Debug.Log("Subphase (" + (TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse).ToString() + "): " + TurnMaster.subphaseAction);
         Debug.Log("playableInCurrentPhase: " + playableInCurrentPhase());
         */
-        return playableInCurrentPhase()
+        return playableNow()
             && character.actions > 0
             && character.energy >= energyPlayCost
             && character.focus >= focusPlayCost
             && (!requireFreeHand || (requireFreeHand && character.getIfFreeHand()));
     }
 
-    private bool playableInCurrentPhase() {
+    private bool playableNow() {
         return (character == TurnMaster.Instance().activeCharacter()
              && TurnMaster.currentPhase == Phase.Action
-             && TurnMaster.subphaseAction == SubphaseAction.WaitingForPlayerInput
+             && StackController.Instance().theStack.Count == 0
              && (subTypes.Contains(CardSubType.Skill)
               || subTypes.Contains(CardSubType.Attack)))
             || (character != TurnMaster.Instance().activeCharacter()
-             && character.activeBlock == null
              && TurnMaster.currentPhase == Phase.Action
-             && TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse
-             && (subTypes.Contains(CardSubType.Defend)
-              || subTypes.Contains(CardSubType.Fast)));
+             && StackController.Instance().isCharacterBeingTargeted(character)
+             && (subTypes.Contains(CardSubType.Fast)
+              || (subTypes.Contains(CardSubType.Defend)
+               && character.activeBlock == null)));
     }
 
     public void cardClicked() {
@@ -113,12 +112,12 @@ public class CardDetails : MonoBehaviour {
 
             cardBase.transform.parent = PlayArea.Instance().transform;
             cardBase.startLerp(PlayArea.Instance().getNextStackPosition());
-            waitingForPlayArea = true;
-            PlayArea.Instance().cards.Add(cardBase);
+
+            StackController.Instance().addToStack(cardBase);
             cardBase.transform.localEulerAngles = new Vector3(0, 0, 0);
-            TurnMaster.subphaseAction = SubphaseAction.Animating;
             cardBase.hovered = false;
             cardBase.hoverLerping = false;
+            cardBase.beingPlayedLerping = true;
             character.refreshUI();
 
             return true;
@@ -131,68 +130,34 @@ public class CardDetails : MonoBehaviour {
         character = GetComponentInParent<BaseCard>().character;
     }
 
-    private void Update() {
-        if (waitingForPlayArea && !cardBase.lerping) {
-            waitingForPlayArea = false;
+    public virtual BaseAbility getAbility(int index) {
+        return abilities[index];
+    }
 
-            StartCoroutine(playCardAnimation());
+    public virtual int getAbilitiesLength() {
+        return abilities.Length;
+    }
+
+    public void executeAbilities() {
+        for (int i = 0; i < getAbilitiesLength(); i++) {
+            BaseAbility ability = getAbility(i);
+            ability.activateAbility(this);
         }
+    }
 
-        if (resolutionDone
-         && Time.time >= abilityPlayedTime + minTimeAfterBeginResolution) {
-            resolutionDone = false;
-            finishResolution();
-        }
-
-        if (abilityResolutionIndex >= 0 && abilityResolutionIndex < abilities.Length) {
-            BaseAbility ability = abilities[abilityResolutionIndex];
+    public bool isCardTargetingCharacter(CombatCharacter character) {
+        foreach (BaseAbility ability in abilities) {
             if (ability is TargetAbility) {
                 TargetAbility tarAbility = ability as TargetAbility;
-                if (tarAbility.needToCheckResolution) {
-                    tarAbility.PsuedoUpdate();
+                if (tarAbility.target is CombatCharacter) {
+                    CombatCharacter tarCharacter = tarAbility.target as CombatCharacter;
+                    if (tarCharacter == character) {
+                        return true;
+                    }
                 }
             }
         }
-    }
-
-    IEnumerator playCardAnimation() {
-        abilityPlayedTime = Time.time;
-
-        yield return new WaitForSeconds(1);
-
-        continueResolution();
-    }
-
-    protected virtual BaseAbility getNextAbilityToResolve() {
-        return abilities[abilityResolutionIndex];
-    }
-
-    protected virtual bool areAbilitiesAllRan() {
-        return abilityResolutionIndex >= abilities.Length;
+        return false;
     }
     
-    public void continueResolution() {
-        abilityResolutionIndex++;
-        if (areAbilitiesAllRan()) {
-            resolutionDone = true;
-            return;
-        } else {
-            BaseAbility ability = getNextAbilityToResolve();
-            ability.activateAbility(this);
-            
-            if (!(ability is TargetAbility)) {
-                continueResolution();
-            }
-        }
-    }
-
-    public void finishResolution() {
-        PlayArea.Instance().cards.Remove(cardBase);
-        if (PlayArea.Instance().abilityOnStack()) {
-            TurnMaster.subphaseAction = SubphaseAction.WaitingForDefenseResponse;
-        } else {
-            TurnMaster.subphaseAction = SubphaseAction.WaitingForPlayerInput;
-        }
-        cardBase.putInDiscard();
-    }
 }

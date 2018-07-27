@@ -30,6 +30,7 @@ public class BaseCard : Targetable {
     public Vector3 hoverDisplacement;
     public bool hovered = false;
     public bool hoverLerping = false;
+    public bool beingPlayedLerping = false;
 
     private bool destroyOnLerpEnd = false;
     public GlowObject glowControl;
@@ -122,15 +123,20 @@ public class BaseCard : Targetable {
                 }
             }
 
-            if (!lerping && destroyOnLerpEnd) {
-                Destroy(gameObject);
-            }
+            if (!lerping) {
 
-            if (!lerping && hoverLerping) {
-                hovered = true;
-                hoverLerping = false;
-                if (EventSystem.current.IsPointerOverGameObject()) {
-                    startLerp(handPosition);
+                if (destroyOnLerpEnd) {
+                    Destroy(gameObject);
+                } else if (hoverLerping) {
+                    hovered = true;
+                    hoverLerping = false;
+                    if (EventSystem.current.IsPointerOverGameObject()) {
+                        startLerp(handPosition);
+                    }
+                } else if (beingPlayedLerping) {
+                    beingPlayedLerping = false;
+                    StackController.Instance().setPostCardMove();
+
                 }
             }
         }

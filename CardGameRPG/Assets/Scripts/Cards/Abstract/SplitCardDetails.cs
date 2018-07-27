@@ -6,19 +6,19 @@ public class SplitCardDetails : CardDetails {
 
     public BaseAbility[] otherTurnAbilities;
 
-    protected override BaseAbility getNextAbilityToResolve() {
+    public override BaseAbility getAbility(int index) {
         if (TurnMaster.Instance().activeCharacter() == character) {
-            return abilities[abilityResolutionIndex];
+            return abilities[index];
         } else {
-            return otherTurnAbilities[abilityResolutionIndex];
+            return otherTurnAbilities[index];
         }
     }
 
-    protected override bool areAbilitiesAllRan() {
+    public override int getAbilitiesLength() {
         if (TurnMaster.Instance().activeCharacter() == character) {
-            return abilityResolutionIndex >= abilities.Length;
+            return abilities.Length;
         } else {
-            return abilityResolutionIndex >= otherTurnAbilities.Length;
+            return otherTurnAbilities.Length;
         }
     }
     
