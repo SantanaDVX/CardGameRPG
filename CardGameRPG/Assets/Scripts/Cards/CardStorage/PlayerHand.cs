@@ -27,4 +27,10 @@ public class PlayerHand : Hand {
             card.transform.localEulerAngles = new Vector3(0, 0, rotationVariation * diff);
         }
     }
+
+    public override void checkHandGlow() {
+        foreach (BaseCard card in cards) {
+            card.setGlow();
+        }
+    }
 }

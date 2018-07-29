@@ -20,8 +20,20 @@ public class StackController : MonoBehaviour {
         return theStack[theStack.Count - 1];
     }
 
+    public bool isCardSubTypeInStack(CardSubType subType) {
+        foreach (BaseCard card in theStack) {
+            if (card.details.subTypes.Contains(subType)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void addToStack(BaseCard card) {
+        TurnMaster.Instance().setContinueButton(false);
         theStack.Add(card);
+        resetPriority();
         precastAbilityIndex = 0;
         resolvingPrecastTriggers = true;
         executeCurrentPrecastTrigger();
@@ -35,11 +47,24 @@ public class StackController : MonoBehaviour {
         waitTimer = postCardMoveWait;
     }
 
+    private void resetPriority() {
+        playerPriorityIndex = 0;
+        foreach (CombatCharacter character in TurnMaster.Instance().charactersInCombat) {
+            character.passedPriority = false;
+        }
+    }
+
+    public CombatCharacter getPriorityCharacter() {
+        int index = (playerPriorityIndex + TurnMaster.Instance().currentCharacterTurnIndex) % TurnMaster.Instance().charactersInCombat.Count;
+        return TurnMaster.Instance().charactersInCombat[index];
+    }
+
     public float phaseBuffer = 0.0f;
     public float waitTimer = 0.0f;
     public bool transitionPhases = false;
     public bool resolvingPrecastTriggers = false;
     public int precastAbilityIndex = 0;
+    public int playerPriorityIndex = 0;
     private void Update() {
         if (TurnMaster.Instance().gameStarted) {
             if (waitTimer > 0) {
@@ -72,26 +97,31 @@ public class StackController : MonoBehaviour {
                         phaseBuffer = 0.0f;
                     }
                 } else {
-                    bool isCardPlayable = false;
+                    bool someoneHasPlay = false;
 
-                    for (int i = 0; i < TurnMaster.Instance().charactersInCombat.Count; i++) {
-                        int index = (i + TurnMaster.Instance().currentCharacterTurnIndex) % TurnMaster.Instance().charactersInCombat.Count;
-                        CombatCharacter character = TurnMaster.Instance().charactersInCombat[index];
-                        foreach (BaseCard card in character.hand.cards) {
-                            if (card.details.isCardPlayable()) {
-                                isCardPlayable = true;
-                                // TODO
-                                // Get Response!!!
-                                break;
+                    for (; playerPriorityIndex < TurnMaster.Instance().charactersInCombat.Count; playerPriorityIndex++) {
+                        CombatCharacter character = getPriorityCharacter();
+                        if (character.passedPriority) {
+                            // Ignore this player
+                        } else {
+                            foreach (BaseCard card in character.hand.cards) {
+                                if (card.details.isCardPlayable()) {
+                                    someoneHasPlay = true;
+                                    if (character.playerCharacter) {
+                                        TurnMaster.Instance().setContinueButton(true);
+                                    } else {
+                                        character.ai.nudgeAIForDecision();
+                                    }
+                                }
                             }
                         }
 
-                        if (isCardPlayable) {
+                        if (someoneHasPlay) {
                             break;
                         }
                     }
 
-                    if (!isCardPlayable) {
+                    if (!someoneHasPlay) {
                         resolveTopOfStack();
                     }
                 }
@@ -100,6 +130,7 @@ public class StackController : MonoBehaviour {
     }
 
     private void resolveTopOfStack() {
+        resetPriority();
         if (theStack.Count == 0) {
             transitionPhases = true;
         } else {

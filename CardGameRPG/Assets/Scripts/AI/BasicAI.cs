@@ -5,59 +5,30 @@ using UnityEngine;
 public class BasicAI : MonoBehaviour {
 
     public CombatCharacter character;
-
-    public bool myActionPhase = false;
-    public bool myDefense = false;
+    
     public float bufferWaitTime = 0.0f;
     public float inBetweenCardsBuffer = 0.5f;
 
+    public bool aiThinking;
+
+
     private void Awake() {
-        EventManager.StartListening(TurnMaster.getStartPhaseTrigger(Phase.Action, character.gameObject.GetInstanceID()), aiActionPhase);
+        aiThinking = false;
+        //EventManager.StartListening(TurnMaster.getStartPhaseTrigger(Phase.Action, character.gameObject.GetInstanceID()), aiActionPhase);
         character.ai = this;
     }
 
-    private void aiActionPhase() {
-        myActionPhase = true;
-    }
-
-    public bool aiThinking() {
-        return myActionPhase;
-    }
-
-    public static bool anyAIThinking() {
-        BasicAI[] ais = FindObjectsOfType<BasicAI>();
-        foreach (BasicAI ai in ais) {
-            if (ai.aiThinking()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void handleDefense() {
-        myDefense = true;
+    public void nudgeAIForDecision() {
+        aiThinking = true;
     }
 
     private void Update() {
-        if (myActionPhase) {
-            if (TurnMaster.subphaseAction == SubphaseAction.WaitingForPlayerInput) {
-                if (bufferWaitTime >= inBetweenCardsBuffer) {
-                    attemptToCastNextCard();
-                    bufferWaitTime = 0;
-                } else {
-                    bufferWaitTime += Time.deltaTime;
-                }
-            }
-        }
-        if (myDefense) {
-            if (TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse) {
-                if (bufferWaitTime >= inBetweenCardsBuffer) {
-                    attemptToCastNextCard();
-                    bufferWaitTime = 0;
-                } else {
-                    bufferWaitTime += Time.deltaTime;
-                }
+        if (aiThinking) {
+            if (bufferWaitTime >= inBetweenCardsBuffer) {
+                attemptToCastNextCard();
+                bufferWaitTime = 0;
+            } else {
+                bufferWaitTime += Time.deltaTime;
             }
         }
     }
@@ -73,12 +44,8 @@ public class BasicAI : MonoBehaviour {
         }
 
         if (!cardCast) {
-            if (myActionPhase) {
-                myActionPhase = false;
-                TurnMaster.Instance().incrementPhase();
-            } else if (myDefense) {
-                myDefense = false;
-            }
+            aiThinking = false;
+            character.passedPriority = true;
         }
     }
 }

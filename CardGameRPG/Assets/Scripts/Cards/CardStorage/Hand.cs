@@ -35,6 +35,7 @@ public abstract class Hand : MonoBehaviour {
         organizeCards();
     }
 
+    public virtual void checkHandGlow() { }
     public abstract void organizeCards();
     public abstract bool getDefaultHiddenStatus();
 

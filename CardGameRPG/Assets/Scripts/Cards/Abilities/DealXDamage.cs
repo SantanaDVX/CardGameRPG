@@ -9,9 +9,7 @@ public class DealXDamage : TargetXAbility {
 
     public override void activateAbility(CardDetails src) {
         CombatCharacter targetCharacter = target as CombatCharacter;
-
-        Debug.Log("src: " + src.cardName);
-        Debug.Log("details: " + details.cardName);
+        
         int damageToDo = X + Convert.ToInt32(weaponMultiply * ((float)details.character.getWeaponDamage()));
         
         targetCharacter.getAttacked(damageToDo);

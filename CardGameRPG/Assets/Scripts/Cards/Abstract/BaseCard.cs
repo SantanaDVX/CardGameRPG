@@ -56,8 +56,12 @@ public class BaseCard : Targetable {
     }
 
     public void setGlow() {
-        if (character != null && character.playerCharacter) {
-            if (details.isCardPlayable()) {
+        details.isCardPlayable();
+    }
+
+    public void setGlow(bool glowOn) {
+        if (character != null && character.playerCharacter && glowControl != null) {
+            if (glowOn) {
                 glowControl.startGlow();
             } else {
                 glowControl.endGlow();
@@ -88,7 +92,6 @@ public class BaseCard : Targetable {
     public void resetCardInfo() {
         abilitiesMesh.UnwrappedText = details.getAbilitiesTextBox() + details.getRequirements();
         abilitiesMesh.NeedsLayout = true;
-        setGlow();
     }
 
     public void startLerp(Vector3 dest) {
@@ -136,7 +139,6 @@ public class BaseCard : Targetable {
                 } else if (beingPlayedLerping) {
                     beingPlayedLerping = false;
                     StackController.Instance().setPostCardMove();
-
                 }
             }
         }

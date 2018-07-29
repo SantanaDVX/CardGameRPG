@@ -39,6 +39,8 @@ public class CombatCharacter : Character {
     public Armor equippedArmor;
     public BasicAI ai;
 
+    public bool passedPriority = false;
+
     private void Awake() {
         shuffleDeck();
         activeBlock = null;
@@ -200,17 +202,7 @@ public class CombatCharacter : Character {
             ui.healthBar.value = calculateHealthPercentage();
             ui.healthText.text = health.ToString() + "/" + maxHealth.ToString();
             ui.actionBar.value = calculateActionPercentage();
-            ui.actionText.text = actions.ToString() + "/" + actionTurnAmount.ToString();
-
-            foreach (BaseCard card in hand.cards) {
-                card.resetCardInfo();
-            }
-
-            foreach (BaseCard card in PlayArea.Instance().cards) {
-                if (card.character == this) {
-                    card.resetCardInfo();
-                }
-            }
+            ui.actionText.text = actions.ToString() + "/" + actionTurnAmount.ToString();            
         }
         if (gearUI != null) {
             gearUI.updateIcons(this);

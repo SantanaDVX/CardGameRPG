@@ -61,17 +61,8 @@ public class TurnMaster : MonoBehaviour {
     }
 
     public void continueButtonActivate() {
-        if (activeCharacter() == CombatCharacter.Player()
-         && currentPhase == Phase.Action
-         && subphaseAction == SubphaseAction.WaitingForPlayerInput) {
-            incrementPhase();
-        } else if (activeCharacter() != CombatCharacter.Player()
-                && currentPhase == Phase.Action
-                && subphaseAction == SubphaseAction.WaitingForDefenseResponse
-                && targetAbilityWaitingForPlayerResponse != null) {
-            setContinueButton(false);
-            targetAbilityWaitingForPlayerResponse = null;
-        }
+        CombatCharacter.Player().passedPriority = true;
+        setContinueButton(false);
     }
 
     public void incrementPhase() {

@@ -17,13 +17,6 @@ public class CardDetails : MonoBehaviour {
     public BaseCard cardBase;
     public GameObject prefabRef;
 
-    private bool waitingForPlayArea = false;
-    
-    private bool resolutionDone = false;
-    private float abilityPlayedTime = 0.0f;
-
-    private float minTimeAfterBeginResolution = 2.0f;
-
     public string getTypeLine() {
         string line = type.ToString() + ": ";
 
@@ -74,15 +67,20 @@ public class CardDetails : MonoBehaviour {
         Debug.Log("Subphase (" + (TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse).ToString() + "): " + TurnMaster.subphaseAction);
         Debug.Log("playableInCurrentPhase: " + playableInCurrentPhase());
         */
-        return playableNow()
-            && character.actions > 0
-            && character.energy >= energyPlayCost
-            && character.focus >= focusPlayCost
-            && (!requireFreeHand || (requireFreeHand && character.getIfFreeHand()));
+        bool playablity = playableNow()
+                       && character.actions > 0
+                       && character.energy >= energyPlayCost
+                       && character.focus >= focusPlayCost
+                       && (!requireFreeHand || (requireFreeHand && character.getIfFreeHand()));
+
+        cardBase.setGlow(playablity);
+
+        return playablity;
     }
 
     private bool playableNow() {
-        return (character == TurnMaster.Instance().activeCharacter()
+        return character == StackController.Instance().getPriorityCharacter()
+            && (character == TurnMaster.Instance().activeCharacter()
              && TurnMaster.currentPhase == Phase.Action
              && StackController.Instance().theStack.Count == 0
              && (subTypes.Contains(CardSubType.Skill)
@@ -92,7 +90,8 @@ public class CardDetails : MonoBehaviour {
              && StackController.Instance().isCharacterBeingTargeted(character)
              && (subTypes.Contains(CardSubType.Fast)
               || (subTypes.Contains(CardSubType.Defend)
-               && character.activeBlock == null)));
+               && character.activeBlock == null
+               && !StackController.Instance().isCardSubTypeInStack(CardSubType.Defend))));
     }
 
     public void cardClicked() {
@@ -119,6 +118,8 @@ public class CardDetails : MonoBehaviour {
             cardBase.hoverLerping = false;
             cardBase.beingPlayedLerping = true;
             character.refreshUI();
+            character.hand.checkHandGlow();
+            cardBase.setGlow(false);
 
             return true;
         }
