@@ -52,5 +52,11 @@ public enum BuffDuration {
     UntilStartOfNextTurn
 };
 
+[Serializable]
+public enum ResourceType {
+    Energy,
+    Focus
+};
+
 
 

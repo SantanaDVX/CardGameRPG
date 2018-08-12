@@ -8,11 +8,11 @@ public abstract class TargetAbility : BaseAbility {
     public string gameAlertPrompt;
     TargetListener targetListener;
     protected CardDetails details;
-    public bool dodgeable;
+    public bool undodgeable;
         
     public Targetable target;
     
-    public override void preCastTrigger(CardDetails details) {
+    public override void preCastTriggerOther(CardDetails details) {
         precastResolve = false;
         this.details = details;
         GameObject go = Instantiate(PrefabDictionary.Instance().targetListener, details.cardBase.transform);
@@ -35,8 +35,8 @@ public abstract class TargetAbility : BaseAbility {
             CombatCharacter targetCharacter = target as CombatCharacter;
 
             //Debug.Log("Resolve Targeting");
-            if (dodgeable && targetCharacter.checkDodge(details.character)) {
-                CombatResultsUI.Instance().dodgeHappened();
+            if ((!undodgeable) && targetCharacter.checkDodge(details.character)) {
+                FloatingDamageTextController.Instance().createDodgeText(targetCharacter.transform);
                 this.target = null;
             } else {
                 //Debug.Log("Not dodged");

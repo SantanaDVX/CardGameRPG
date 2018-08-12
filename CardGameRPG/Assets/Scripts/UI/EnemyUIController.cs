@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyUIController : MonoBehaviour {
 
     public CharacterUI ui;
-    public GearUI gearUI;
+    public TabPanelController tabPanel;
 
     public GameObject animagusTrackTab;
 
     public void setUI(CombatCharacter character) {
         character.ui = this.ui;
-        character.gearUI = this.gearUI;
+        character.tabPanel = this.tabPanel;
     }
 
     private static EnemyUIController enemyUIController;

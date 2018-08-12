@@ -9,7 +9,7 @@ public class CombatCharacter : Character {
     public Deck deck;
     public Discard discard;
     public CharacterUI ui;
-    public GearUI gearUI;
+    public TabPanelController tabPanel;
     public List<BaseBuff> buffs;
     
     public virtual int actionTurnAmount { get; protected set; }
@@ -77,6 +77,22 @@ public class CombatCharacter : Character {
         }
     }
 
+    public bool hasPlay() {
+        if (!passedPriority) {
+            foreach (BaseCard card in hand.cards) {
+                if (card.details.isCardPlayable()) {
+                    if (playerCharacter) {
+                        TurnMaster.Instance().setContinueButton(true);
+                    } else {
+                        ai.nudgeAIForDecision();
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public bool equipItem(BaseEquippable item) {
         if (item is Weapon) {
             if (equippedWeapon != null) {
@@ -125,8 +141,8 @@ public class CombatCharacter : Character {
         return hitChance < 100;
     }
 
-    public void getAttacked(int dmgAmount) {
-        int dmg = dmgAmount - armor;
+    public void getAttacked(int rawDamage) {
+        int dmg = rawDamage - armor;
         int blockValue = 0;
         if (activeBlock != null) {
             blockValue = activeBlock.blockValue;
@@ -136,7 +152,7 @@ public class CombatCharacter : Character {
         health -= dmg;
         activeBlock = null;
         refreshUI();
-        CombatResultsUI.Instance().setCombatResultsUI(dmgAmount, armor, blockValue, dmg);
+        FloatingDamageTextController.Instance().createFloatingDamageText(transform, rawDamage, armor, blockValue, dmg);
 
         if (health <= 0) {
             if (playerCharacter) {
@@ -204,8 +220,8 @@ public class CombatCharacter : Character {
             ui.actionBar.value = calculateActionPercentage();
             ui.actionText.text = actions.ToString() + "/" + actionTurnAmount.ToString();            
         }
-        if (gearUI != null) {
-            gearUI.updateIcons(this);
+        if (tabPanel != null) {
+            tabPanel.updateTabs(this);
         }
     }
 

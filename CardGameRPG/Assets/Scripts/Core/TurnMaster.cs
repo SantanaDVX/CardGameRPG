@@ -14,8 +14,6 @@ public class TurnMaster : MonoBehaviour {
 
     public Text phaseText;
     public int turnNumber = 1;
-    private float timeWaitingInPhase = 0.0f;
-    private float phaseTurnoverTime = 0.75f;
 
     public List<CombatCharacter> charactersInCombat;
     public int currentCharacterTurnIndex;
@@ -104,8 +102,6 @@ public class TurnMaster : MonoBehaviour {
                 setContinueButton(true);
             }
         }
-
-        timeWaitingInPhase = 0;
         phaseText.text = currentPhase.ToString();
         EventManager.TriggerEvent(getGenericStartPhaseTrigger());
         EventManager.TriggerEvent(getStartPhaseTrigger(currentPhase, activeCharacter().gameObject.GetInstanceID()));
@@ -129,8 +125,6 @@ public class TurnMaster : MonoBehaviour {
             }
         }
     }
-
-    private static TurnMaster eventManager;
 
     private static TurnMaster turnMaster;
     public static TurnMaster Instance() {

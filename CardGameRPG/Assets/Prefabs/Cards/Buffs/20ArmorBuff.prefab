@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffName: Cover
   tooltip: +20 Armor until start of next turn.
-  buffIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 714e7d26ede29c74d94d03f3977651bc, type: 3}
   duration: 2
   target: {fileID: 0}
   X: 20

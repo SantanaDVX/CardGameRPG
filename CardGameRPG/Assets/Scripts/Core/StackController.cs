@@ -101,20 +101,7 @@ public class StackController : MonoBehaviour {
 
                     for (; playerPriorityIndex < TurnMaster.Instance().charactersInCombat.Count; playerPriorityIndex++) {
                         CombatCharacter character = getPriorityCharacter();
-                        if (character.passedPriority) {
-                            // Ignore this player
-                        } else {
-                            foreach (BaseCard card in character.hand.cards) {
-                                if (card.details.isCardPlayable()) {
-                                    someoneHasPlay = true;
-                                    if (character.playerCharacter) {
-                                        TurnMaster.Instance().setContinueButton(true);
-                                    } else {
-                                        character.ai.nudgeAIForDecision();
-                                    }
-                                }
-                            }
-                        }
+                        someoneHasPlay = character.hasPlay();
 
                         if (someoneHasPlay) {
                             break;

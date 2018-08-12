@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffName: Fast Feet
   tooltip: +10 Avoidance until start of next turn.
-  buffIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: a651cb26263456940b6875f18d325713, type: 3}
   duration: 2
   target: {fileID: 0}
   X: 10

@@ -156,6 +156,16 @@ public class CardDetails : MonoBehaviour {
                         return true;
                     }
                 }
+            } else if (ability is MultiTargetAbility) {
+                MultiTargetAbility tarAbility = ability as MultiTargetAbility;
+                foreach (Targetable target in tarAbility.targets) {
+                    if (target is CombatCharacter) {
+                        CombatCharacter tarCharacter = target as CombatCharacter;
+                        if (tarCharacter == character) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;

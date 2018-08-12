@@ -28,7 +28,7 @@ public class CollectionController : MonoBehaviour {
             GameObject go = Instantiate(PrefabDictionary.Instance().cardBase, Vector3.zero, Quaternion.Euler(90, 0, 0), collectionHolder.transform.transform);
             BaseCard card = go.GetComponent<BaseCard>();
             if (includedInDeck) {
-                GameObject overlay = Instantiate(PrefabDictionary.Instance().inDeckOverlay, go.transform);
+                Instantiate(PrefabDictionary.Instance().inDeckOverlay, go.transform);
             }
             card.loadCardDetails(cardGO);
 

@@ -34,6 +34,7 @@ public class BaseCard : Targetable {
 
     private bool destroyOnLerpEnd = false;
     public GlowObject glowControl;
+    public ParticleSystem magicParticles;
 
     private void Start() {
         glowControl = GetComponent<GlowObject>();
@@ -77,7 +78,12 @@ public class BaseCard : Targetable {
         name = details.cardName;
         string subtypesKey = "";
         foreach (CardSubType type in details.subTypes) {
-            subtypesKey += type.ToString().ToLower();
+            string subType = type.ToString().ToLower();
+            if (subType.Equals("magic")) {
+                magicParticles.gameObject.SetActive(true);
+            } else {
+                subtypesKey += subType;
+            }
         }
         cardMeshRenderer.material = MaterialDictionary.Instance().materialDictionary[subtypesKey];
         cardNameMesh.text = details.cardName;

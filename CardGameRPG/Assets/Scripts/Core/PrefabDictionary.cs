@@ -13,6 +13,9 @@ public class PrefabDictionary : MonoBehaviour {
 
     public GameObject cardBase;
     public GameObject targetListener;
+    public GameObject multiTargetListener;
+    public GameObject FloatingDamageText;
+    public GameObject DodgeText;
 
     public GameObject inDeckOverlay;
 }

@@ -6,13 +6,18 @@ using UnityEngine;
 public class DealXDamage : TargetXAbility {
     
     public float weaponMultiply;
+    public float varXMultiply;
 
     public override void activateAbility(CardDetails src) {
-        CombatCharacter targetCharacter = target as CombatCharacter;
-        
-        int damageToDo = X + Convert.ToInt32(weaponMultiply * ((float)details.character.getWeaponDamage()));
-        
-        targetCharacter.getAttacked(damageToDo);
+        if (target != null) {
+            CombatCharacter targetCharacter = target as CombatCharacter;
+
+            int damageToDo = X 
+                           + Convert.ToInt32(weaponMultiply * ((float)details.character.getWeaponDamage()))
+                           + Convert.ToInt32(varXMultiply * ((float)varX));
+
+            targetCharacter.getAttacked(damageToDo);
+        }
     }
 
     public override string getAlertPromptText() {
@@ -29,6 +34,15 @@ public class DealXDamage : TargetXAbility {
             weaponText = "+" + multiplyText + "W";
         }
 
-        return "Deal " + X.ToString() + weaponText + " damage to target enemy.";
+        string varXText = "";
+        if (varXMultiply > 0 && includeVarX) {
+            string multiplyText = "";
+            if (weaponMultiply != 1) {
+                multiplyText = varXMultiply.ToString();
+            }
+            varXText = "+" + multiplyText + "X";
+        }
+
+        return getVarXText() + "Deal " + X.ToString() + varXText + weaponText + " damage to target enemy.";
     }
 }

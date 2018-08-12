@@ -11,7 +11,6 @@ public class TargetListener : MonoBehaviour {
 
     private void Awake() {
         TurnMaster.Instance().targetListener = this;
-
     }
 
     private void Start() {
@@ -22,7 +21,7 @@ public class TargetListener : MonoBehaviour {
         }
     }
 
-    public bool checkTarget(Targetable target) {
+    public virtual bool checkTarget(Targetable target) {
         if (targetCatgeory == TargetCategory.Enemy
          && target is CombatCharacter
          && target != targetSource.character) {
