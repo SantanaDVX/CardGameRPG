@@ -39,14 +39,16 @@ public class MultiTargetListener : TargetListener {
         if (targets.Count == targetCount) {
             resolve = true;
         } else if (uniqueTargets) {
-            if (targetCatgeory == TargetCategory.Enemy) {
+            if (targetCatgeory == TargetCategory.Enemy
+              && target is CombatCharacter) {
                 CombatCharacter tarCharacter = target as CombatCharacter;
                 if (tarCharacter.playerCharacter) {
                     resolve = true;
                 } else if (targets.Count == (TurnMaster.Instance().charactersInCombat.Count - 1)) {
                     resolve = true;
                 }
-            } else if (targetCatgeory == TargetCategory.CardInOwnHand) {
+            } else if (targetCatgeory == TargetCategory.CardInOwnHand
+                    && target is BaseCard) {
                 BaseCard card = target as BaseCard;
                 if (targets.Count == card.character.hand.cards.Count) {
                     resolve = true;

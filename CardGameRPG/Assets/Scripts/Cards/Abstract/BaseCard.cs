@@ -73,10 +73,12 @@ public class BaseCard : Targetable {
     public void loadCardDetails(GameObject cardDetails) {
         GameObject go = Instantiate(cardDetails, transform.transform);
         details = go.GetComponent<CardDetails>();
+        details.character = character;
         details.cardBase = this;
         details.prefabRef = cardDetails;
         name = details.cardName;
         string subtypesKey = "";
+        magicParticles.gameObject.SetActive(false);
         foreach (CardSubType type in details.subTypes) {
             string subType = type.ToString().ToLower();
             if (subType.Equals("magic")) {
@@ -87,11 +89,11 @@ public class BaseCard : Targetable {
         }
         cardMeshRenderer.material = MaterialDictionary.Instance().materialDictionary[subtypesKey];
         cardNameMesh.text = details.cardName;
-        energyPlayCostMesh.text = details.energyPlayCost.ToString();
-        focusPlayCostMesh.text = (details.focusPlayCost > 0 ? details.focusPlayCost.ToString() : "");
+        energyPlayCostMesh.text = details.getEnergyPlayCost().ToString();
+        focusPlayCostMesh.text = (details.getFocusPlayCost() > 0 ? details.getFocusPlayCost().ToString() : "");
         artSprite.sprite = details.art;
         typelineMesh.text = details.getTypeLine();
-        focusLearnCostMesh.text = details.learnCost.ToString();
+        focusLearnCostMesh.text = details.getFocusLearnCost().ToString();
         resetCardInfo();
     }
 
@@ -133,7 +135,6 @@ public class BaseCard : Targetable {
             }
 
             if (!lerping) {
-
                 if (destroyOnLerpEnd) {
                     Destroy(gameObject);
                 } else if (hoverLerping) {

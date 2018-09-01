@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   cardName: Whirling Barrage
-  energyPlayCost: 50
+  energyPlayCost: 40
   focusPlayCost: 0
   requireFreeHand: 0
   art: {fileID: 21300000, guid: 878efcab48de45b47a2e7f40a846fb6e, type: 3}
@@ -61,6 +61,6 @@ MonoBehaviour:
   subTypes: 00000000
   abilities:
   - {fileID: 114785127383273404, guid: dc68c1d3a2f357a409481e39f6f3e0c8, type: 2}
-  learnCost: 50
+  learnCost: 25
   cardBase: {fileID: 0}
   prefabRef: {fileID: 0}

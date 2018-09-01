@@ -78,16 +78,38 @@ public class CombatCharacter : Character {
     }
 
     public bool hasPlay() {
+        bool hasPlay = false;
         if (!passedPriority) {
             foreach (BaseCard card in hand.cards) {
                 if (card.details.isCardPlayable()) {
-                    if (playerCharacter) {
-                        TurnMaster.Instance().setContinueButton(true);
-                    } else {
-                        ai.nudgeAIForDecision();
-                    }
-                    return true;
+                    hasPlay = true;
+
                 }
+            }
+
+            if (!hasPlay
+             && playerCharacter
+             && isSideboardAllowedNow()
+             && atleastOneSideboardLearnable()) {
+                hasPlay = true;
+            }
+        }
+        if (hasPlay) {
+            if (playerCharacter) {
+                TurnMaster.Instance().setContinueButton(true);
+            } else {
+                ai.nudgeAIForDecision();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public bool atleastOneSideboardLearnable() {
+        foreach (GameObject card in PlayerInfo.Instance().sideboard) {
+            if (card.GetComponent<CardDetails>().getFocusLearnCost() <= focus) {
+                return true;
             }
         }
         return false;
@@ -158,6 +180,7 @@ public class CombatCharacter : Character {
             if (playerCharacter) {
                 GameAlertUI.Instance().setText("You died!");
             } else {
+                TurnMaster.Instance().handleEnemyDeath(this);
                 Destroy(gameObject);
             }
         }
@@ -203,6 +226,12 @@ public class CombatCharacter : Character {
         return ((float)actions) / ((float)actionTurnAmount);
     }
 
+    private bool isSideboardAllowedNow() {
+        return this == TurnMaster.Instance().activeCharacter()
+                    && TurnMaster.currentPhase == Phase.Action
+                    && StackController.Instance().theStack.Count == 0;
+    }
+
     public virtual void refreshUI() {
         if (ui != null) {
             ui.transform.GetChild(0).gameObject.SetActive(true);
@@ -222,6 +251,13 @@ public class CombatCharacter : Character {
         }
         if (tabPanel != null) {
             tabPanel.updateTabs(this);
+        }
+
+        if (playerCharacter) {
+            SideboardController.Instance().addToDeckButton.interactable =
+                PlayerInfo.Instance().sideboard.Count > 0
+             && SideboardController.Instance().currentPreviewedCard.GetComponent<CardDetails>().getFocusLearnCost() <= focus
+             && isSideboardAllowedNow();
         }
     }
 

@@ -16,6 +16,56 @@ public class CardDetails : MonoBehaviour {
     public int learnCost;
     public BaseCard cardBase;
     public GameObject prefabRef;
+    protected int abilityResolutionIndex;
+
+    private void Awake() {
+        abilityResolutionIndex = 0;
+    }
+
+    public int getFocusPlayCost() {
+        if ((character == null || character == CombatCharacter.Player())
+          && PlayerCardProgress.Instance().cards.ContainsKey(cardName)) {
+            CardProgress prog = PlayerCardProgress.Instance().cards[cardName];
+            if (prog.progress == CardProgression.Perfected) {
+                return Mathf.FloorToInt(((float)focusPlayCost) * 0.8f);
+            } else if (prog.progress == CardProgression.Proficient
+                    || prog.progress == CardProgression.Mastered) {
+                return Mathf.FloorToInt(((float)focusPlayCost) * 0.9f);
+            }
+        }
+
+        return focusPlayCost;
+    }
+
+    public int getEnergyPlayCost() {
+        if ((character == null || character == CombatCharacter.Player())
+          && PlayerCardProgress.Instance().cards.ContainsKey(cardName)) {
+            CardProgress prog = PlayerCardProgress.Instance().cards[cardName];
+            if (prog.progress == CardProgression.Perfected) {
+                return Mathf.FloorToInt(((float)energyPlayCost) * 0.8f);
+            } else if (prog.progress == CardProgression.Proficient
+                    || prog.progress == CardProgression.Mastered) {
+                return Mathf.FloorToInt(((float)energyPlayCost) * 0.9f);
+            }
+        }
+
+        return energyPlayCost;
+    }
+
+    public int getFocusLearnCost() {
+        if ((character == null || character == CombatCharacter.Player())
+          && PlayerCardProgress.Instance().cards.ContainsKey(cardName)) {
+            CardProgress prog = PlayerCardProgress.Instance().cards[cardName];
+            if (prog.progress == CardProgression.Perfected) {
+                return Mathf.FloorToInt(((float)learnCost) * 0.8f);
+            } else if (prog.progress == CardProgression.Proficient
+                    || prog.progress == CardProgression.Mastered) {
+                return Mathf.FloorToInt(((float)learnCost) * 0.9f);
+            }
+        }
+
+        return learnCost;
+    }
 
     public string getTypeLine() {
         string line = type.ToString() + ": ";
@@ -69,8 +119,8 @@ public class CardDetails : MonoBehaviour {
         */
         bool playablity = playableNow()
                        && character.actions > 0
-                       && character.energy >= energyPlayCost
-                       && character.focus >= focusPlayCost
+                       && character.energy >= getEnergyPlayCost()
+                       && character.focus >= getFocusPlayCost()
                        && (!requireFreeHand || (requireFreeHand && character.getIfFreeHand()));
 
         cardBase.setGlow(playablity);
@@ -104,8 +154,8 @@ public class CardDetails : MonoBehaviour {
     public bool attemptToPlayCard() {
         if (isCardPlayable()) {
             character.actions--;
-            character.energy -= energyPlayCost;
-            character.focus -= focusPlayCost;
+            character.energy -= getEnergyPlayCost();
+            character.focus -= getFocusPlayCost();
             character.hand.removeFromHand(cardBase);
             character.refreshUI();
 
@@ -120,15 +170,12 @@ public class CardDetails : MonoBehaviour {
             character.refreshUI();
             character.hand.checkHandGlow();
             cardBase.setGlow(false);
+            PlayerCardProgress.Instance().cardExpGain(this);
 
             return true;
         }
 
         return false;
-    }
-
-    private void Start() {
-        character = GetComponentInParent<BaseCard>().character;
     }
 
     public virtual BaseAbility getAbility(int index) {
@@ -139,11 +186,13 @@ public class CardDetails : MonoBehaviour {
         return abilities.Length;
     }
 
-    public void executeAbilities() {
-        for (int i = 0; i < getAbilitiesLength(); i++) {
-            BaseAbility ability = getAbility(i);
-            ability.activateAbility(this);
+    public bool executeAbilities() {
+        BaseAbility ability = getAbility(abilityResolutionIndex);
+        ability.activateAbility(this);
+        if (ability.isAbilityResolved()) {
+            abilityResolutionIndex++;
         }
+        return abilityResolutionIndex == getAbilitiesLength();
     }
 
     public bool isCardTargetingCharacter(CombatCharacter character) {

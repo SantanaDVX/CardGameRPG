@@ -8,6 +8,7 @@ public abstract class BaseBuff : MonoBehaviour {
     public string tooltip;
     public Sprite buffIcon;
     public BuffDuration duration;
+    public List<BuffCategory> categories;
 
     string eventName;
 

@@ -9,12 +9,40 @@ public abstract class TargetAbility : BaseAbility {
     TargetListener targetListener;
     protected CardDetails details;
     public bool undodgeable;
+    public bool targetOnResolution;
         
     public Targetable target;
     
     public override void preCastTriggerOther(CardDetails details) {
-        precastResolve = false;
         this.details = details;
+        listeningStarted = false;
+        if (!targetOnResolution) {
+            precastResolve = false;
+            startListening();
+        }
+    }
+
+    public virtual string getAlertPromptText() {
+        return gameAlertPrompt;
+    }
+
+    private bool listeningStarted = false;
+    public override void activateAbility(CardDetails src) {
+        this.details = src;
+        if (targetOnResolution) {
+            if (!listeningStarted) {
+                abilityResolve = false;
+                startListening();
+            }
+        } else {
+            activateTargetAbility();
+        }
+    }
+
+    public abstract void activateTargetAbility();
+
+    protected void startListening() {
+        listeningStarted = true;
         GameObject go = Instantiate(PrefabDictionary.Instance().targetListener, details.cardBase.transform);
         targetListener = go.GetComponent<TargetListener>();
         targetListener.targetCatgeory = targetCategory;
@@ -23,13 +51,8 @@ public abstract class TargetAbility : BaseAbility {
         GameAlertUI.Instance().setText(getAlertPromptText());
     }
 
-    public virtual string getAlertPromptText() {
-        return gameAlertPrompt;
-    }
-
     public void resolveTargeting(Targetable target) {
         this.target = target;
-        precastResolve = true;
         GameAlertUI.Instance().deactivateText();
         if (targetCategory == TargetCategory.Enemy) {
             CombatCharacter targetCharacter = target as CombatCharacter;
@@ -41,6 +64,13 @@ public abstract class TargetAbility : BaseAbility {
             } else {
                 //Debug.Log("Not dodged");
             }
+        }
+
+        if (targetOnResolution) {
+            abilityResolve = true;
+            activateTargetAbility();
+        } else {
+            precastResolve = true;
         }
     }
     

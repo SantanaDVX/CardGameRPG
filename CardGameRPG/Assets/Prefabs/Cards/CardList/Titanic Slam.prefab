@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   cardName: Titanic Slam
-  energyPlayCost: 70
+  energyPlayCost: 75
   focusPlayCost: 0
   requireFreeHand: 0
   art: {fileID: 21300000, guid: 7e1cbb94969cac942b7b0f2cef89fed5, type: 3}
@@ -61,6 +61,6 @@ MonoBehaviour:
   subTypes: 00000000
   abilities:
   - {fileID: 114848419772944702, guid: 6b4001150437de443868446e4f17c10e, type: 2}
-  learnCost: 40
+  learnCost: 55
   cardBase: {fileID: 0}
   prefabRef: {fileID: 0}

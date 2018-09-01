@@ -52,7 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBoxText: Discard a card.
+  includeVarX: 0
+  varXResource: 0
   targetCategory: 1
   gameAlertPrompt: Discard a card
-  needToCheckResolution: 0
-  playerSkippedResponse: 0
+  undodgeable: 0
+  targetOnResolution: 1
+  target: {fileID: 0}

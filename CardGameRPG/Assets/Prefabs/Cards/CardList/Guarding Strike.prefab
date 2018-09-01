@@ -53,14 +53,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   cardName: Guarding Strike
-  energyPlayCost: 30
+  energyPlayCost: 25
   focusPlayCost: 0
   requireFreeHand: 0
   art: {fileID: 21300000, guid: c470d00d0693e0c408ce839732cedc29, type: 3}
   type: 0
   subTypes: 0100000000000000
   abilities:
-  - {fileID: 114171450612365788, guid: 24829fdba8fc34749bc17da6553a9d85, type: 2}
+  - {fileID: 114171450612365788, guid: a15217986939fb54bb4fb8ec2f3ed920, type: 2}
   learnCost: 10
   cardBase: {fileID: 0}
   prefabRef: {fileID: 0}

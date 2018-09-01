@@ -13,6 +13,7 @@ public class BasicAI : MonoBehaviour {
 
 
     private void Awake() {
+        character = GetComponent<CombatCharacter>();
         aiThinking = false;
         //EventManager.StartListening(TurnMaster.getStartPhaseTrigger(Phase.Action, character.gameObject.GetInstanceID()), aiActionPhase);
         character.ai = this;

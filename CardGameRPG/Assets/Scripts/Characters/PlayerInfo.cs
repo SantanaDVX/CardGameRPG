@@ -8,11 +8,14 @@ public class PlayerInfo : MonoBehaviour {
     public Armor armor;
 
     public Deck deck;
+
+    public int preadventureFocus;
     
     public List<GameObject> sideboard;
 
     private void Awake() {
         deck = GetComponent<Deck>();
+
     }
 
     public void loadPlayerInfo() {

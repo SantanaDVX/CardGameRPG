@@ -25,6 +25,11 @@ public abstract class BaseAbility : MonoBehaviour {
         varXDetermined = true;
     }
 
+    protected bool abilityResolve = true;
+    public bool isAbilityResolved() {
+        return abilityResolve;
+    }
+
     protected bool precastResolve = true;
     protected bool varXDetermined = false;
     public bool isPrecastResolved() {

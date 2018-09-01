@@ -11,9 +11,11 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
 
     public string tooltipContent;
 
+    public List<BuffCategory> buffCategories;
+
     public void OnPointerEnter(PointerEventData eventData) {
         if (!mouseOver) {
-            TooltipController.Instance().setTooltip(tooltipTitle, tooltipContent);
+            TooltipController.Instance().setTooltip(tooltipTitle, tooltipContent, buffCategories);
             mouseOver = true;
         }
     }

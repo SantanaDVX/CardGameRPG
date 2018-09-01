@@ -10,9 +10,9 @@ public abstract class Hand : MonoBehaviour {
     public void addCard(GameObject details) {
         GameObject go = Instantiate(PrefabDictionary.Instance().cardBase, spawnPoint.position, Quaternion.identity, transform.transform);
         BaseCard card = go.GetComponent<BaseCard>();
+        card.character = character;
         card.hiddenCard = getDefaultHiddenStatus();
         card.loadCardDetails(details);
-        card.character = character;
 
         cards.Add(card);
 

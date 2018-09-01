@@ -35,8 +35,10 @@ public class BuffUI : MonoBehaviour {
                 buffTooltips.Add(buff.tooltip);
                 GameObject go = Instantiate(buffIconPrefab, gridTransform);
                 go.GetComponent<Image>().sprite = buff.buffIcon;
-                go.GetComponent<Tooltip>().tooltipTitle = buff.buffName;
-                go.GetComponent<Tooltip>().tooltipContent = buff.tooltip;
+                Tooltip toolTip = go.GetComponent<Tooltip>();
+                toolTip.tooltipTitle = buff.buffName;
+                toolTip.tooltipContent = buff.tooltip;
+                toolTip.buffCategories = buff.categories;
             }
         }
     }

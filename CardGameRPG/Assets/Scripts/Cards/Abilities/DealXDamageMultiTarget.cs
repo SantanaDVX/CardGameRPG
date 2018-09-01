@@ -43,7 +43,7 @@ public class DealXDamageMultiTarget : MultiTargetXAbility {
             if (weaponMultiply != 1) {
                 multiplyText = varXMultiply.ToString();
             }
-            damageText = (!damageText.Equals("") ? "+" : "") + multiplyText + "X";
+            damageText += (!damageText.Equals("") ? "+" : "") + multiplyText + "X";
         }
 
         return getVarXText() + "Deal " + damageText + " damage to " + targetCount + (uniqueTargets ? " unqiue" : "") + " target enemies.";

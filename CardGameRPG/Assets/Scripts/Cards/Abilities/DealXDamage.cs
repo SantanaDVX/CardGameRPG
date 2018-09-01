@@ -8,7 +8,7 @@ public class DealXDamage : TargetXAbility {
     public float weaponMultiply;
     public float varXMultiply;
 
-    public override void activateAbility(CardDetails src) {
+    public override void activateTargetAbility() {
         if (target != null) {
             CombatCharacter targetCharacter = target as CombatCharacter;
 
