@@ -6,6 +6,7 @@ public class SmartTextMesh : MonoBehaviour {
     TextMesh TheMesh;
     public string UnwrappedText;
     public float MaxWidth;
+    public float MaxHeight;
     public bool NeedsLayout = true;
     public bool ConvertNewLines = false;
 
@@ -55,6 +56,37 @@ public class SmartTextMesh : MonoBehaviour {
             TheMesh.text = UnwrappedText;
             return;
         }
+        string text = UnwrappedText;
+        string[] parts = text.Split(' ');
+
+        int startingFontSize = TheMesh.fontSize;
+        for (int j = 0; j < (startingFontSize - 10); j += 5) {
+            string builder = "";
+            TheMesh.text = "";
+            TheMesh.fontSize = startingFontSize - j;
+            for (int i = 0; i < parts.Length; i++) {
+                string part = BreakPartIfNeeded(parts[i]);
+                TheMesh.text += part + " ";
+                if (TheMesh.GetComponent<Renderer>().bounds.extents.x > MaxWidth) {
+                    TheMesh.text = builder.TrimEnd() + System.Environment.NewLine + part + " ";
+                }
+                builder = TheMesh.text;
+            }
+
+            if (TheMesh.GetComponent<Renderer>().bounds.extents.y <= MaxHeight) {
+                break;
+            }
+        }
+    }
+    /*
+    void Update() {
+        if (!NeedsLayout)
+            return;
+        NeedsLayout = false;
+        if (MaxWidth == 0) {
+            TheMesh.text = UnwrappedText;
+            return;
+        }
         string builder = "";
         string text = UnwrappedText;
         TheMesh.text = "";
@@ -68,4 +100,5 @@ public class SmartTextMesh : MonoBehaviour {
             builder = TheMesh.text;
         }
     }
+    */
 }

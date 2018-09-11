@@ -53,7 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   cardName: Chop
-  energyPlayCost: 20
+  rarity: 0
+  energyPlayCost: 18
   focusPlayCost: 0
   requireFreeHand: 0
   art: {fileID: 21300000, guid: a122565c02d07054a933e8ed81136fac, type: 3}
@@ -64,3 +65,4 @@ MonoBehaviour:
   learnCost: 10
   cardBase: {fileID: 0}
   prefabRef: {fileID: 0}
+  repeatCount: 0

@@ -59,18 +59,18 @@ public class AnimagusCharacter : CombatCharacter {
     };
 
     public static int[] cardDrawAlignmentValues = new int[] {
-        8,
+        7,
         6,
         5,
         4,
-        2
+        3
     };
 
     public static int[] focusAlignmentValues = new int[] {
-        20,
-        30,
+        10,
+        25,
         40,
-        50,
-        60
+        55,
+        80
     };
 }

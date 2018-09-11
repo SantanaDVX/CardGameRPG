@@ -32,6 +32,7 @@ public class CombatCharacter : Character {
     public float avoidance;
     public float accuracy;
     public int armor;
+    public int weaponDamageMod;
 
     public Block activeBlock;
     
@@ -60,7 +61,9 @@ public class CombatCharacter : Character {
     }
 
     private void OnMouseDown() {
-        TurnMaster.Instance().checkTargetListener(this);
+        if (!PauseController.paused) {
+            TurnMaster.Instance().checkTargetListener(this);
+        }
     }
 
     private void OnMouseOver() {
@@ -140,11 +143,7 @@ public class CombatCharacter : Character {
     }
 
     public int getWeaponDamage() {
-        if (equippedWeapon == null) {
-            return 0;
-        } else {
-            return equippedWeapon.weaponDamage;
-        }
+        return (equippedWeapon == null ? 0 : equippedWeapon.weaponDamage) + weaponDamageMod;
     }
 
     public bool getIfFreeHand() {
@@ -155,16 +154,19 @@ public class CombatCharacter : Character {
         }
     }
 
-    public bool checkDodge(CombatCharacter source) {
+    public bool checkDodge(CombatCharacter source, float accuracyMod) {
         float rng = Random.Range(0, 100);
 
-        float hitChance = rng + source.accuracy - this.avoidance;
+        float hitChance = rng + (accuracyMod * source.accuracy) - this.avoidance;
 
         return hitChance < 100;
     }
 
-    public void getAttacked(int rawDamage) {
-        int dmg = rawDamage - armor;
+    public void getAttacked(int rawDamage, bool ignoreArmor) {
+        int dmg = rawDamage;
+        if (!ignoreArmor) {
+            dmg -= armor;
+        }
         int blockValue = 0;
         if (activeBlock != null) {
             blockValue = activeBlock.blockValue;
@@ -184,6 +186,16 @@ public class CombatCharacter : Character {
                 Destroy(gameObject);
             }
         }
+    }
+
+    public int getBuffCategoryCount(BuffCategory cat) {
+        int cnt = 0;
+        foreach (BaseBuff buff in buffs) {
+            if (buff.categories.Contains(cat)) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     public bool hasDefendPossibility() {
@@ -304,7 +316,7 @@ public class CombatCharacter : Character {
     public void doDraw() {
         GameObject card = deck.deckContents[0];
         deck.deckContents.RemoveAt(0);
-        hand.addCard(card);
+        hand.addNewCard(card);
     }
 
     public void shuffleDiscardIntoDeck() {

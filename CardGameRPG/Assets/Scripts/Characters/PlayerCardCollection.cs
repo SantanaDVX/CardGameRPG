@@ -8,16 +8,9 @@ public class PlayerCardCollection : MonoBehaviour {
 
     private void Start() {
         foreach (GameObject card in cardCollection) {
-            createLearnedProgress(card);
+            PlayerCardProgress.Instance().createNewCardAtTrained(card);
         }
         CardProgressController.Instance().loadCardProgression();
-    }
-
-    private void createLearnedProgress(GameObject card) {
-        CardProgress progress = new CardProgress(card);
-        progress.progress = CardProgression.Trained;
-        //progress.expPoints = 120;
-        PlayerCardProgress.Instance().cards.Add(card.GetComponent<CardDetails>().cardName, progress);
     }
 
     private static PlayerCardCollection playerCardCollection;

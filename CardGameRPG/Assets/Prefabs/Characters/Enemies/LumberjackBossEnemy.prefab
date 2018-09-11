@@ -1870,9 +1870,10 @@ MonoBehaviour:
   energy: 50
   focus: 0
   health: 100
-  avoidance: 5
+  avoidance: 0
   accuracy: 100
   armor: 0
+  weaponDamageMod: 0
   activeBlock:
     blockValue: 0
   equippedWeapon: {fileID: 114472258311868892, guid: 0a552d87952d37845896314a9f10cec0,
@@ -1899,15 +1900,15 @@ MonoBehaviour:
   deckContents:
   - {fileID: 1514858445870402, guid: 67da096fa31c0b64b98204e8a752ce24, type: 2}
   - {fileID: 1514858445870402, guid: 67da096fa31c0b64b98204e8a752ce24, type: 2}
+  - {fileID: 1514858445870402, guid: a62587b4c53229c4c9b040a8f3246b41, type: 2}
+  - {fileID: 1514858445870402, guid: a62587b4c53229c4c9b040a8f3246b41, type: 2}
   - {fileID: 1514858445870402, guid: 6cb41c4905d6a24458b51d1077a48bc6, type: 2}
-  - {fileID: 1514858445870402, guid: 6cb41c4905d6a24458b51d1077a48bc6, type: 2}
-  - {fileID: 1845669093960868, guid: 9d1ab71b47ce72044a6783059b59f193, type: 2}
-  - {fileID: 1845669093960868, guid: 9d1ab71b47ce72044a6783059b59f193, type: 2}
-  - {fileID: 1514858445870402, guid: 67da096fa31c0b64b98204e8a752ce24, type: 2}
-  - {fileID: 1514858445870402, guid: 67da096fa31c0b64b98204e8a752ce24, type: 2}
-  - {fileID: 1514858445870402, guid: e1622deaba88bf34b82d0b3074a04e2b, type: 2}
-  - {fileID: 1514858445870402, guid: 6cb41c4905d6a24458b51d1077a48bc6, type: 2}
-  - {fileID: 1514858445870402, guid: 6cb41c4905d6a24458b51d1077a48bc6, type: 2}
+  - {fileID: 1845669093960868, guid: cc5f03f803651eb429f8aef4ba9a5597, type: 2}
+  - {fileID: 1845669093960868, guid: cc5f03f803651eb429f8aef4ba9a5597, type: 2}
+  - {fileID: 1845669093960868, guid: cc5f03f803651eb429f8aef4ba9a5597, type: 2}
+  - {fileID: 1845669093960868, guid: 3843b4b02fc31174383e991c53ceabae, type: 2}
+  - {fileID: 1845669093960868, guid: 3843b4b02fc31174383e991c53ceabae, type: 2}
+  - {fileID: 1845669093960868, guid: 3843b4b02fc31174383e991c53ceabae, type: 2}
   character: {fileID: 114231908751567686}
 --- !u!114 &114527262308486620
 MonoBehaviour:
@@ -1939,6 +1940,7 @@ MonoBehaviour:
   bufferWaitTime: 0
   inBetweenCardsBuffer: 0.5
   aiThinking: 0
+  debug: 0
 --- !u!114 &114854175575587740
 MonoBehaviour:
   m_ObjectHideFlags: 1

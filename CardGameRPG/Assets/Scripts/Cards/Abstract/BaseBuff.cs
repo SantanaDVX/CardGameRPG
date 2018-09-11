@@ -7,6 +7,7 @@ public abstract class BaseBuff : MonoBehaviour {
     public string buffName;
     public string tooltip;
     public Sprite buffIcon;
+    public int durationCnt = 1;
     public BuffDuration duration;
     public List<BuffCategory> categories;
 
@@ -35,15 +36,18 @@ public abstract class BaseBuff : MonoBehaviour {
             }
         }
 
-        EventManager.StartListening(eventName, removeBuff);
+        EventManager.StartListening(eventName, buffDurationDecrement);
     }
 
-    private void removeBuff() {
-        applyBuff(-1);
-        target.buffs.Remove(this);
-        target.refreshUI();
-        EventManager.StopListening(eventName, removeBuff);
-        Destroy(gameObject);
+    private void buffDurationDecrement() {
+        durationCnt--;
+        if (duration <= 0) {
+            applyBuff(-1);
+            target.buffs.Remove(this);
+            target.refreshUI();
+            EventManager.StopListening(eventName, buffDurationDecrement);
+            Destroy(gameObject);
+        }
     }
 
     public abstract void applyBuff(int mult);

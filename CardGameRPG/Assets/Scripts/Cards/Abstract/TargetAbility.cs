@@ -9,6 +9,7 @@ public abstract class TargetAbility : BaseAbility {
     TargetListener targetListener;
     protected CardDetails details;
     public bool undodgeable;
+    public float accuracyMod = 1;
     public bool targetOnResolution;
         
     public Targetable target;
@@ -58,7 +59,7 @@ public abstract class TargetAbility : BaseAbility {
             CombatCharacter targetCharacter = target as CombatCharacter;
 
             //Debug.Log("Resolve Targeting");
-            if ((!undodgeable) && targetCharacter.checkDodge(details.character)) {
+            if ((!undodgeable) && targetCharacter.checkDodge(details.character, accuracyMod)) {
                 FloatingDamageTextController.Instance().createDodgeText(targetCharacter.transform);
                 this.target = null;
             } else {

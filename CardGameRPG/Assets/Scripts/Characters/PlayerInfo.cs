@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour {
-    public int currentHealth;
     public Weapon weapon;
     public Armor armor;
 
     public Deck deck;
 
+    public int startingHealth;
     public int preadventureFocus;
+    public int gold;
     
     public List<GameObject> sideboard;
 
@@ -21,7 +22,8 @@ public class PlayerInfo : MonoBehaviour {
     public void loadPlayerInfo() {
         CombatCharacter player = GameObject.FindGameObjectWithTag("Player").GetComponent<CombatCharacter>();
 
-        player.health = currentHealth;
+        player.maxHealth = startingHealth;
+        player.health = startingHealth;
         player.equipItem(weapon);
         player.equipItem(armor);
         player.deck = deck;

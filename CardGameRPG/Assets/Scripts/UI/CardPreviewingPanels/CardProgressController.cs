@@ -11,7 +11,6 @@ public class CardProgressController : MonoBehaviour {
     public BaseCard cardProgressPreviewCard;
     public GameObject currentPreviewedCard;
 
-
     public Slider cardProgress;
     public Image progressMeterBackground;
     public Text progressMeterTitleText;
@@ -33,6 +32,10 @@ public class CardProgressController : MonoBehaviour {
 
     public void toggleCardProgressPanel() {
         gameObject.SetActive(!gameObject.activeSelf);
+
+        if (gameObject.activeSelf) {
+            transform.transform.localPosition = new Vector3(0, 0, 0);
+        }
     }
 
     public void loadCardProgression() {

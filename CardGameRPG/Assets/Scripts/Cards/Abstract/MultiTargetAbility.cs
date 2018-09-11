@@ -9,6 +9,7 @@ public abstract class MultiTargetAbility : BaseAbility {
     MultiTargetListener targetListener;
     protected CardDetails details;
     public bool undodgeable;
+    public float accuracyMod = 1;
     public int targetCount;
     public bool uniqueTargets;
     protected bool dodged = false;
@@ -41,7 +42,7 @@ public abstract class MultiTargetAbility : BaseAbility {
                 CombatCharacter targetCharacter = this.targets[i] as CombatCharacter;
 
                 //Debug.Log("Resolve Targeting");
-                if ((!undodgeable) && targetCharacter.checkDodge(details.character)) {
+                if ((!undodgeable) && targetCharacter.checkDodge(details.character, accuracyMod)) {
                     FloatingDamageTextController.Instance().createDodgeText(targetCharacter.transform);
                     this.targets.RemoveAt(i);
                 } else {

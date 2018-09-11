@@ -11,6 +11,11 @@ public class GameController : MonoBehaviour {
 
     private Adventure nextAdventure;
 
+    public void startStory(Story story) {
+        switchToNode("Cutscene");
+        CutsceneController.Instance().storyCutscene(story);
+    }
+
     public void startPreadventure(Adventure adventure) {
         nextAdventure = adventure;
         switchToNode("Preadventure");
@@ -28,9 +33,18 @@ public class GameController : MonoBehaviour {
         CutsceneController.Instance().preBattleCutscene(adventure);
     }
 
-    public void finishAdventure() {
-        switchToNode("World");
+    public void finishAdventure(Adventure adventure) {
+        finishResolvable(adventure);
         StartCoroutine(removeBattleScene());
+    }
+
+    public void finishResolvable(LocationContentWithResolution lcwr) {
+        switchToNode("Resolution");
+        ResolutionController.Instance().setResolutionPage(lcwr);
+    }
+
+    public void finishResolution() {
+        switchToNode("World");
     }
 
     IEnumerator removeBattleScene() {

@@ -31,7 +31,11 @@ public class SubSceneNode : MonoBehaviour {
 
     public static SubSceneNode getNode(string key) {
         //Debug.Log("Key: " + key);
-        return subSceneNodes[key];
+        if (subSceneNodes.ContainsKey(key)) {
+            return subSceneNodes[key];
+        } else {
+            return null;
+        }
     }
 
     public static Dictionary<string, SubSceneNode> getDict() {

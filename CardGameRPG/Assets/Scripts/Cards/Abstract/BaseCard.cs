@@ -13,6 +13,7 @@ public class BaseCard : Targetable {
     public SmartTextMesh abilitiesMesh;
     public TextMesh focusLearnCostMesh;
     public MeshRenderer cardMeshRenderer;
+    public SpriteRenderer rarityGemSprite;
 
     public CardDetails details;
 
@@ -41,7 +42,9 @@ public class BaseCard : Targetable {
     }
 
     private void OnMouseDown() {
-        details.cardClicked();
+        if (!PauseController.paused) {
+            details.cardClicked();
+        }
     }
 
     private void OnMouseOver() {
@@ -94,11 +97,20 @@ public class BaseCard : Targetable {
         artSprite.sprite = details.art;
         typelineMesh.text = details.getTypeLine();
         focusLearnCostMesh.text = details.getFocusLearnCost().ToString();
+        rarityGemSprite.sprite = MaterialDictionary.Instance().rarityGemsDictionary[details.rarity];
         resetCardInfo();
     }
 
+    protected string getRepeatText() {
+        if (details.repeatCount > 0) {
+            return "Card Repeat: " + details.repeatCount + "\n";
+        } else {
+            return "";
+        }
+    }
+
     public void resetCardInfo() {
-        abilitiesMesh.UnwrappedText = details.getAbilitiesTextBox() + details.getRequirements();
+        abilitiesMesh.UnwrappedText = getRepeatText() + details.getAbilitiesTextBox() + details.getRequirements();
         abilitiesMesh.NeedsLayout = true;
     }
 

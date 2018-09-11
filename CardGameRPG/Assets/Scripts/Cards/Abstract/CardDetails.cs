@@ -6,6 +6,7 @@ public class CardDetails : MonoBehaviour {
 
     public CombatCharacter character;
     public string cardName;
+    public CardRarity rarity;
     public int energyPlayCost;
     public int focusPlayCost;
     public bool requireFreeHand;
@@ -16,6 +17,7 @@ public class CardDetails : MonoBehaviour {
     public int learnCost;
     public BaseCard cardBase;
     public GameObject prefabRef;
+    public int repeatCount;
     protected int abilityResolutionIndex;
 
     private void Awake() {
@@ -107,20 +109,23 @@ public class CardDetails : MonoBehaviour {
             return "";
         }
     }
-
     public bool isCardPlayable() {
-        /*
-        Debug.Log("ME: " + cardName);
-        Debug.Log("Active char (" + (character != TurnMaster.Instance().activeCharacter()).ToString() + "): " + TurnMaster.Instance().activeCharacter());
-        Debug.Log("character.activeBlock (" + (character.activeBlock == null).ToString() + "): " + character.activeBlock);
-        Debug.Log("Phase (" + (TurnMaster.currentPhase == Phase.Action).ToString() + "): " + TurnMaster.currentPhase);
-        Debug.Log("Subphase (" + (TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse).ToString() + "): " + TurnMaster.subphaseAction);
-        Debug.Log("playableInCurrentPhase: " + playableInCurrentPhase());
-        */
-        bool playablity = playableNow()
-                       && character.actions > 0
-                       && character.energy >= getEnergyPlayCost()
-                       && character.focus >= getFocusPlayCost()
+        return isCardPlayable(0, 0, 0);
+    }
+
+    public bool isCardPlayable(int energyMod, int focusMod, int actionMod) {
+            /*
+            Debug.Log("ME: " + cardName);
+            Debug.Log("Active char (" + (character != TurnMaster.Instance().activeCharacter()).ToString() + "): " + TurnMaster.Instance().activeCharacter());
+            Debug.Log("character.activeBlock (" + (character.activeBlock == null).ToString() + "): " + character.activeBlock);
+            Debug.Log("Phase (" + (TurnMaster.currentPhase == Phase.Action).ToString() + "): " + TurnMaster.currentPhase);
+            Debug.Log("Subphase (" + (TurnMaster.subphaseAction == SubphaseAction.WaitingForDefenseResponse).ToString() + "): " + TurnMaster.subphaseAction);
+            Debug.Log("playableInCurrentPhase: " + playableInCurrentPhase());
+            */
+            bool playablity = playableNow()
+                       && character.actions + actionMod > 0
+                       && character.energy + energyMod >= getEnergyPlayCost()
+                       && character.focus + focusMod >= getFocusPlayCost()
                        && (!requireFreeHand || (requireFreeHand && character.getIfFreeHand()));
 
         cardBase.setGlow(playablity);
@@ -141,6 +146,9 @@ public class CardDetails : MonoBehaviour {
              && (subTypes.Contains(CardSubType.Fast)
               || (subTypes.Contains(CardSubType.Defend)
                && character.activeBlock == null
+               && (!StackController.Instance().isTopCardType(CardSubType.Magic)
+                || (StackController.Instance().isTopCardType(CardSubType.Magic)
+                 && subTypes.Contains(CardSubType.Magic)))
                && !StackController.Instance().isCardSubTypeInStack(CardSubType.Defend))));
     }
 
@@ -176,6 +184,14 @@ public class CardDetails : MonoBehaviour {
         }
 
         return false;
+    }
+
+    public void repeatCard() {
+        repeatCount--;
+        cardBase.hiddenCard = false;
+        abilityResolutionIndex = 0;
+        cardBase.transform.parent = character.hand.transform;
+        cardBase.resetCardInfo();
     }
 
     public virtual BaseAbility getAbility(int index) {

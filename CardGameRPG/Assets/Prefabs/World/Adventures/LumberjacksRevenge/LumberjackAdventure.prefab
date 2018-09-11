@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1867667058092368}
+  m_IsPrefabParent: 1
+--- !u!1 &1867667058092368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4862037696280960}
+  - component: {fileID: 114431055942678774}
+  m_Layer: 0
+  m_Name: LumberjackAdventure
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4862037696280960
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867667058092368}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114431055942678774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867667058092368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4937bddf424db5642b08fd0abd70b325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  adventureName: Lumberjacks Again
+  encounters:
+  - {fileID: 114424384360984726, guid: 4e15bf16bccc53c4caf8d0d9147bd0fa, type: 2}
+  - {fileID: 114424384360984726, guid: 3046fa3662cac584abe555542454025c, type: 2}
+  - {fileID: 114424384360984726, guid: 1e353e2f0a750784588fa09af45fe872, type: 2}
+  preAdventureCutscene: {fileID: 114793278632913368, guid: c28aaca3ebfaa194db6d36dfad054a26,
+    type: 2}
+  encounterIndex: -1
+  permenantPreAdventureFocusGain: 1
+  freeSkills: []
+  completionFlags: 01000000

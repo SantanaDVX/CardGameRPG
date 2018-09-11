@@ -18,6 +18,12 @@ public class PlayerCardProgress : MonoBehaviour {
         cards = new Dictionary<string, CardProgress>();
     }
 
+    public void createNewCardAtTrained(GameObject card) {
+        CardProgress progress = new CardProgress(card);
+        progress.progress = CardProgression.Trained;
+        PlayerCardProgress.Instance().cards.Add(card.GetComponent<CardDetails>().cardName, progress);
+    }
+
     public void cardExpGain(CardDetails card) {
         if (!cards.ContainsKey(card.cardName)) {
             CardProgress cardProgTmp = new CardProgress(card.prefabRef);

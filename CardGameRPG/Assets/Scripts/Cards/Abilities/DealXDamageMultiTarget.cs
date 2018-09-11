@@ -16,7 +16,9 @@ public class DealXDamageMultiTarget : MultiTargetXAbility {
                            + Convert.ToInt32(weaponMultiply * ((float)details.character.getWeaponDamage()))
                            + Convert.ToInt32(varXMultiply * ((float)varX));
 
-            targetCharacter.getAttacked(damageToDo);
+            bool ignoreArmor = details.subTypes.Contains(CardSubType.Magic);
+
+            targetCharacter.getAttacked(damageToDo, ignoreArmor);
         }
     }
 

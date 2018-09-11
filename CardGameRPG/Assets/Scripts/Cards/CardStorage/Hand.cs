@@ -7,13 +7,24 @@ public abstract class Hand : MonoBehaviour {
     public List<BaseCard> cards;
     public Transform spawnPoint;
 
-    public void addCard(GameObject details) {
+    public bool debugReorganizeCards = false;
+
+    public void addRepeatCard(BaseCard card) {
+        card.details.repeatCard();
+        addCard(card);
+    }
+
+    public void addNewCard(GameObject details) {
         GameObject go = Instantiate(PrefabDictionary.Instance().cardBase, spawnPoint.position, Quaternion.identity, transform.transform);
         BaseCard card = go.GetComponent<BaseCard>();
         card.character = character;
         card.hiddenCard = getDefaultHiddenStatus();
         card.loadCardDetails(details);
 
+        addCard(card);
+    }
+
+    protected void addCard(BaseCard card) {
         cards.Add(card);
 
         organizeCards();
@@ -33,6 +44,13 @@ public abstract class Hand : MonoBehaviour {
     public void removeFromHand(BaseCard card) {
         cards.Remove(card);
         organizeCards();
+    }
+
+    private void Update() {
+        if (debugReorganizeCards) {
+            debugReorganizeCards = false;
+            organizeCards();
+        }
     }
 
     public virtual void checkHandGlow() { }

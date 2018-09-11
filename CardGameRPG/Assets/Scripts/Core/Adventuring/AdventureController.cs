@@ -21,7 +21,14 @@ public class AdventureController : MonoBehaviour {
     }
 
     protected void finishAdventure() {
-        GameController.Instance().finishAdventure();
+        foreach (AdventureFlag flag in adventure.completionFlags) {
+            PlayerStoryProgress.Instance().incrementStoryFlag(flag);
+        }
+        CombatCharacter.Player().discard.discardContents = new List<GameObject>();
+        CombatCharacter.Player().hand.cards = new List<BaseCard>();
+        CombatCharacter.Player().deck.deckContents = new List<GameObject>();
+        PlayerInfo.Instance().sideboard = new List<GameObject>();
+        GameController.Instance().finishAdventure(adventure);
     }
 
     public void victoryAnimation() {

@@ -54,8 +54,8 @@ MonoBehaviour:
   itemName: Leather Armor
   itemIcon: {fileID: 21300000, guid: c04db52ccfe4527429d46d9767145b8f, type: 3}
   avoidanceMod: 5
-  armorMod: 10
-  accuracyMod: 0
+  armorMod: 5
+  accuracyMod: 3
   actionMod: 0
   energyMod: 0
   cardsMod: 0

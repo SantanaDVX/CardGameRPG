@@ -17,7 +17,16 @@ public class StackController : MonoBehaviour {
     }
 
     protected BaseCard stackTop() {
-        return theStack[theStack.Count - 1];
+        if (theStack.Count > 0) {
+            return theStack[theStack.Count - 1];
+        } else {
+            return null;
+        }
+    }
+
+    public bool isTopCardType(CardSubType subType) {
+        BaseCard card = stackTop();
+        return card != null && card.details.subTypes.Contains(subType);
     }
 
     public bool isCardSubTypeInStack(CardSubType subType) {
@@ -129,8 +138,14 @@ public class StackController : MonoBehaviour {
 
         if (cardFinished) {
             resolvingAbilities = false;
-            theStack.Remove(card);
-            card.putInDiscard();
+            int repeatCount = card.details.repeatCount;
+            if (repeatCount > 0) {
+                card.character.hand.addRepeatCard(card);
+                theStack.Remove(card);
+            } else {
+                theStack.Remove(card);
+                card.putInDiscard();
+            }
         }
     }
 

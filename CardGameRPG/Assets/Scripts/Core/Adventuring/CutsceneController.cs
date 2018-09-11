@@ -9,12 +9,25 @@ public class CutsceneController : MonoBehaviour {
 
     public GameObject cutscenePageParagraphPrefab;
     private Adventure curAdventure;
+    private Story curStory;
     private Cutscene curCutscene;
     private int curCutscenePageIndex;
 
+    private void resetCurSetting() {
+        curAdventure = null;
+        curStory = null;
+    }
+
     public void preBattleCutscene(Adventure adventure) {
+        resetCurSetting();
         curAdventure = adventure;
         startCutscene(curAdventure.preAdventureCutscene);
+    }
+
+    public void storyCutscene(Story story) {
+        resetCurSetting();
+        curStory = story;
+        startCutscene(curStory.storyCutscene);
     }
 
     public void resolvePreBattleCutscene() {
@@ -35,11 +48,17 @@ public class CutsceneController : MonoBehaviour {
     }
 
     private void endCutscene() {
-        if (curCutscene == curAdventure.preAdventureCutscene) {
-            resolvePreBattleCutscene();
+        if (curAdventure != null) {
+            if (curCutscene == curAdventure.preAdventureCutscene) {
+                resolvePreBattleCutscene();
+            } else {
+                switchToBattle();
+                AdventureController.Instance().continueWithAdventure();
+            }
+        } else if (curStory != null) {
+            GameController.Instance().finishResolvable(curStory);
         } else {
-            switchToBattle();
-            AdventureController.Instance().continueWithAdventure();
+            throw new System.Exception("Unexpected cutscene transition");
         }
     }
 

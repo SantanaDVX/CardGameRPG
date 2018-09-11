@@ -69,12 +69,14 @@ public enum BuffCategory {
     Enviroment,
     Fire,
     Ice,
+    Magic,
 
     Crippling,
     Curse
 
 };
 
+[Serializable]
 public enum CardProgression {
     Unlearned,
     Trained,
@@ -83,3 +85,37 @@ public enum CardProgression {
     Mastered,
     Perfected
 }
+
+[Serializable]
+public enum CardRarity {
+    Basic,
+    Advanced,
+    Secret,
+    Mythical,
+    Legendary,
+    Unique
+}
+
+
+[Serializable]
+public enum LocationType {
+    Adventure,
+    Story,
+    Shop,
+    Training
+}
+
+
+[Serializable]
+public enum Comparison {
+    GT,
+    GTE,
+    EQ,
+    NEQ,
+    LTE,
+    LT
+}
+
+
+
+
