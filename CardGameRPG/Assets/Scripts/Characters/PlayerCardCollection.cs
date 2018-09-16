@@ -5,6 +5,11 @@ using UnityEngine;
 public class PlayerCardCollection : MonoBehaviour {
     public List<GameObject> cardCollection;
 
+    public void addBrandNewTrainedCard(GameObject card) {
+        cardCollection.Add(card);
+        PlayerCardProgress.Instance().createNewCardAtTrained(card);
+    }
+
 
     private void Start() {
         foreach (GameObject card in cardCollection) {

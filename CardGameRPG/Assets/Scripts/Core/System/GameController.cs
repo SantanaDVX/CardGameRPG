@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
     private Adventure nextAdventure;
 
     public void startStory(Story story) {
+        PlayerStoryProgress.Instance().incrementStoryFlag(AdventureFlag.StoryContentCnt);
         switchToNode("Cutscene");
         CutsceneController.Instance().storyCutscene(story);
     }
@@ -34,6 +35,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void finishAdventure(Adventure adventure) {
+        PlayerStoryProgress.Instance().decrementStoryFlag(AdventureFlag.StoryContentCnt);
         finishResolvable(adventure);
         StartCoroutine(removeBattleScene());
     }
@@ -44,6 +46,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void finishResolution() {
+        DateController.Instance().moveTimeForward(1);
         switchToNode("World");
     }
 

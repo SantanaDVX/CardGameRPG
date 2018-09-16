@@ -5,6 +5,7 @@ using UnityEngine;
 public class CombatCharacter : Character {
     public bool playerCharacter;
     public string characterName;
+    public Transform arrowPoint;
     public Hand hand;
     public Deck deck;
     public Discard discard;
@@ -259,7 +260,10 @@ public class CombatCharacter : Character {
             ui.healthBar.value = calculateHealthPercentage();
             ui.healthText.text = health.ToString() + "/" + maxHealth.ToString();
             ui.actionBar.value = calculateActionPercentage();
-            ui.actionText.text = actions.ToString() + "/" + actionTurnAmount.ToString();            
+            ui.actionText.text = actions.ToString() + "/" + actionTurnAmount.ToString();
+            if (!playerCharacter) {
+                ui.enemyArrow.position = Camera.main.WorldToScreenPoint(arrowPoint.transform.position) + ui.arrowDisplacement;
+            }
         }
         if (tabPanel != null) {
             tabPanel.updateTabs(this);
@@ -270,7 +274,7 @@ public class CombatCharacter : Character {
                 PlayerInfo.Instance().sideboard.Count > 0
              && SideboardController.Instance().currentPreviewedCard.GetComponent<CardDetails>().getFocusLearnCost() <= focus
              && isSideboardAllowedNow();
-        }
+        } 
     }
 
     public void turnOffUI() {

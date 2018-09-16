@@ -71,7 +71,8 @@ public enum BuffCategory {
     Ice,
     Magic,
 
-    Crippling,
+    Debilitating,
+    Demoralizing,
     Curse
 
 };
@@ -116,6 +117,41 @@ public enum Comparison {
     LT
 }
 
+
+
+[Serializable]
+public enum DaysOfWeek {
+    Apreckaday,
+    Breckensday,
+    Crugsleday,
+    Dulmnaday,
+    Eugrophday,
+    Fronxenday
+}
+
+[Serializable]
+public enum WeeksOfMonth {
+    Glynweek,
+    Huegenweek,
+    Ittradunweek,
+    Japhenweek
+}
+
+[Serializable]
+public enum MonthsOfYear {
+    Koplenmonth,
+    Lungermonth,
+    Mejhamonth,
+    Nawmermonth,
+    Oggratukmonth,
+    Pagfinmonth,
+    Quirtenmonth,
+    Rortmonth,
+    Seizenmonth,
+    Tordorlmonth,
+    Ubagornmonth,
+    Vlubtorbmonth
+}
 
 
 

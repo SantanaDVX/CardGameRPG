@@ -21,7 +21,7 @@ public class PlayerCardProgress : MonoBehaviour {
     public void createNewCardAtTrained(GameObject card) {
         CardProgress progress = new CardProgress(card);
         progress.progress = CardProgression.Trained;
-        PlayerCardProgress.Instance().cards.Add(card.GetComponent<CardDetails>().cardName, progress);
+        cards.Add(card.GetComponent<CardDetails>().cardName, progress);
     }
 
     public void cardExpGain(CardDetails card) {

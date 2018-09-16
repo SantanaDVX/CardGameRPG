@@ -47,8 +47,9 @@ public class ResolutionController : MonoBehaviour {
         player.gold += content.getGoldGained();
         // DO SOMETHING WITH ITEMS
         foreach (GameObject card in content.getCardsGained()) {
-            PlayerCardProgress.Instance().createNewCardAtTrained(card);
+            PlayerCardCollection.Instance().addBrandNewTrainedCard(card);
         }
+        CardProgressController.Instance().loadCardProgression();
     }
 
 

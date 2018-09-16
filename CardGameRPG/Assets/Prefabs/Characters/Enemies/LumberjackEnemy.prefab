@@ -133,6 +133,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1147594253318950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4568220810504304}
+  m_Layer: 0
+  m_Name: ArrowPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1149650286510388
 GameObject:
   m_ObjectHideFlags: 1
@@ -1377,6 +1392,19 @@ Transform:
   m_Father: {fileID: 4426685991841972}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4568220810504304
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1147594253318950}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.952, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4871854363690286}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4570894802796390
 Transform:
   m_ObjectHideFlags: 1
@@ -1644,6 +1672,7 @@ Transform:
   - {fileID: 4093618960364444}
   - {fileID: 4114917826063256}
   - {fileID: 4761569889745984}
+  - {fileID: 4568220810504304}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1855,6 +1884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cards: []
   spawnPoint: {fileID: 4093618960364444}
+  debugReorganizeCards: 0
   character: {fileID: 114280384495356962}
   handDisplacement: {x: -0.095, y: 0.043, z: -0.033}
 --- !u!114 &114280384495356962
@@ -1870,6 +1900,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacter: 0
   characterName: Bob
+  arrowPoint: {fileID: 4568220810504304}
   hand: {fileID: 114189662926037588}
   deck: {fileID: 114891119786624702}
   discard: {fileID: 114303204384929734}

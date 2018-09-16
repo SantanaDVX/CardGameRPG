@@ -39,9 +39,15 @@ public abstract class BaseBuff : MonoBehaviour {
         EventManager.StartListening(eventName, buffDurationDecrement);
     }
 
+    public void removeDebuff() {
+        while (durationCnt > 0) {
+            buffDurationDecrement();
+        }
+    }
+
     private void buffDurationDecrement() {
         durationCnt--;
-        if (duration <= 0) {
+        if (durationCnt <= 0) {
             applyBuff(-1);
             target.buffs.Remove(this);
             target.refreshUI();

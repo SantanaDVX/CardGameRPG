@@ -8,6 +8,7 @@ public class PlayerStoryProgress : MonoBehaviour {
     public bool gainDebug;
 
     public Dictionary<AdventureFlag, int> storyFlags = new Dictionary<AdventureFlag, int>();
+    public HashSet<int> storiesCompleted = new HashSet<int>();
 
     private void Update() {
         if (gainDebug) {
@@ -17,11 +18,20 @@ public class PlayerStoryProgress : MonoBehaviour {
     }
 
     public void incrementStoryFlag(AdventureFlag flag) {
+        changeStoryFlag(flag, 1);
+    }
+
+    public void decrementStoryFlag(AdventureFlag flag) {
+        changeStoryFlag(flag, -1);
+    }
+
+    public void changeStoryFlag(AdventureFlag flag, int amt) {
         if (storyFlags.ContainsKey(flag)) {
-            storyFlags[flag]++;
+            storyFlags[flag] += amt;
         } else {
-            storyFlags.Add(flag, 1);
+            storyFlags.Add(flag, amt);
         }
+        storyFlags[flag] = Mathf.Max(0, storyFlags[flag]);
     }
 
     public bool flagMet(AdventureFlag flag, int requirement, Comparison comp) {

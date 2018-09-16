@@ -18,4 +18,6 @@ public class CharacterUI : MonoBehaviour {
     public Text healthText;
     public Slider actionBar;
     public Text actionText;
+    public RectTransform enemyArrow;
+    public Vector3 arrowDisplacement;
 }
