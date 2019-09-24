@@ -30,6 +30,7 @@ public class PreadventureCardController : MonoBehaviour {
         GameController.Instance().startAdventure();
     }
 
+
     public void toggleCard(CardDetails card, bool added) {
         totalFocusCost += (added ? card.getFocusLearnCost() : -1 * card.getFocusLearnCost());
         cardCnt += (added ? 1 : -1);

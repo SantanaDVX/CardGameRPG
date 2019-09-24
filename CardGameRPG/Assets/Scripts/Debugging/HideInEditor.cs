@@ -3,14 +3,23 @@ using UnityEngine.UI;
 
 [ExecuteInEditMode]
 public class HideInEditor : MonoBehaviour {
+
     void OnEnable() {
-        toggleRenderings(!Application.isEditor || Application.isPlaying);
-    }
-    void OnDisable() {
-        toggleRenderings(true);
+        toggleRenderingsParent(!Application.isEditor || Application.isPlaying);
     }
 
-    private void toggleRenderings(bool status) {
+    void OnDisable() {
+        toggleRenderingsParent(true);        
+    }
+
+    private void toggleRenderingsParent(bool status) {
+        toggleRenderings(status);
+        foreach (HideInEditor childHider in GetComponentsInChildren<HideInEditor>()) {
+            childHider.toggleRenderings(status);
+        }
+    }
+
+    public void toggleRenderings(bool status) {
         foreach (Renderer tmp in GetComponents<Renderer>()) {
             tmp.enabled = status;
         }

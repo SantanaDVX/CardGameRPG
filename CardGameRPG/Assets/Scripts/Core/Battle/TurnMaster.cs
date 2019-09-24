@@ -9,6 +9,14 @@ public class TurnMaster : MonoBehaviour {
     public static Phase currentPhase;
     public static SubphaseAction subphaseAction = SubphaseAction.WaitingForPlayerInput;
 
+    private static List<Phase> playerPhaseOrder = new List<Phase> {Phase.Upkeep
+                                                                 , Phase.Draw
+                                                                 , Phase.Action
+                                                                 , Phase.End };
+    private static List<Phase> enemyPhaseOrder = new List<Phase> {Phase.Upkeep
+                                                                 , Phase.Action
+                                                                 , Phase.Draw
+                                                                 , Phase.End };
     private static Phase startPhase = Phase.Upkeep;
     public GameObject continueButton;
 
@@ -76,7 +84,14 @@ public class TurnMaster : MonoBehaviour {
         EventManager.TriggerEvent(getEndPhaseTrigger(currentPhase, activeCharacter().gameObject.GetInstanceID()));
         bool grabNextPhase = false;
 
-        foreach (Phase phase in Enum.GetValues(typeof(Phase))) {
+        List<Phase> phases;
+        if (activeCharacter().playerCharacter) {
+            phases = playerPhaseOrder;
+        } else {
+            phases = enemyPhaseOrder;
+        }
+
+        foreach (Phase phase in phases) {
             if (grabNextPhase) {
                 currentPhase = phase;
                 grabNextPhase = false;

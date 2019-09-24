@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,7 +11,7 @@ public class BaseCard : Targetable {
     public TextMesh focusPlayCostMesh;
     public SpriteRenderer artSprite;
     public TextMesh typelineMesh;
-    public SmartTextMesh abilitiesMesh;
+    public TextMeshPro abilitiesMesh;
     public TextMesh focusLearnCostMesh;
     public MeshRenderer cardMeshRenderer;
     public SpriteRenderer rarityGemSprite;
@@ -110,8 +111,7 @@ public class BaseCard : Targetable {
     }
 
     public void resetCardInfo() {
-        abilitiesMesh.UnwrappedText = getRepeatText() + details.getAbilitiesTextBox() + details.getRequirements();
-        abilitiesMesh.NeedsLayout = true;
+        abilitiesMesh.text = getRepeatText() + details.getAbilitiesTextBox() + details.getRequirements();
     }
 
     public void startLerp(Vector3 dest) {

@@ -228,7 +228,7 @@ public class CombatCharacter : Character {
     }
 
     float calculateFocusPercentage() {
-        return ((float)focus) / ((float)focusTurnAmount);
+        return 1.0f;
     }
 
     float calculateHealthPercentage() {
@@ -256,7 +256,7 @@ public class CombatCharacter : Character {
             ui.energyBar.value = calculateEnergyPercentage();
             ui.energyText.text = energy.ToString() + "/" + energyTurnAmount.ToString();
             ui.focusBar.value = calculateFocusPercentage();
-            ui.focusText.text = focus.ToString() + "/" + focusTurnAmount.ToString();
+            ui.focusText.text = focus.ToString();
             ui.healthBar.value = calculateHealthPercentage();
             ui.healthText.text = health.ToString() + "/" + maxHealth.ToString();
             ui.actionBar.value = calculateActionPercentage();
@@ -285,7 +285,7 @@ public class CombatCharacter : Character {
         discardHand();
         actions = actionTurnAmount;
         energy = energyTurnAmount;
-        focus = focusTurnAmount;
+        focus += focusTurnAmount;
         refreshUI();
         drawXFromDeck(cardDrawTurnAmount);
         if (!playerCharacter && hand.cards.Count > 0) {

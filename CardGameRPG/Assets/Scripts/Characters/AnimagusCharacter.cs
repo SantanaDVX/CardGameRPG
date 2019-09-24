@@ -67,10 +67,10 @@ public class AnimagusCharacter : CombatCharacter {
     };
 
     public static int[] focusAlignmentValues = new int[] {
-        10,
+        5,
+        15,
+        20,
         25,
-        40,
-        55,
-        80
+        35
     };
 }

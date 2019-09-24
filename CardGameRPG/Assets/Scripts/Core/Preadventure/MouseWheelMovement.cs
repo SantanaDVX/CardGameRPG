@@ -12,6 +12,6 @@ public class MouseWheelMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        rb.AddForce(transform.forward * mouseWheelForceFactor * Input.GetAxis("Mouse ScrollWheel"));
+        rb.AddForce(transform.forward * mouseWheelForceFactor * -1 * Input.GetAxis("Mouse ScrollWheel"));
     }
 }
